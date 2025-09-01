@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 from datetime import datetime, timezone
 
-load_dotenv()
+from pathlib import Path
+load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / ".env")
+
 
 app = Flask(__name__)
 
