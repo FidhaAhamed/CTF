@@ -15,7 +15,7 @@ export default function Rat() {
       number={NUMBER}
       hash={HASH}
       code={CODE}
-      nextRoute="/challenge/2"
+      nextRoute="/challenge/cat"
     />
   );
 }

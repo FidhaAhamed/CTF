@@ -19,7 +19,7 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/congrats" element={<Congrats />} />
 
-      {/* numeric aliases */}
+      {/* numeric aliases 
       <Route path="/challenge/1" element={<Rat />} />
       <Route path="/challenge/2" element={<Cat />} />
       <Route path="/challenge/3" element={<Fox />} />
@@ -29,7 +29,7 @@ export default function App() {
       <Route path="/challenge/7" element={<Lynx />} />
       <Route path="/challenge/8" element={<Seal />} />
       <Route path="/challenge/9" element={<Raven />} />
-      <Route path="/challenge/10" element={<Puma />} />
+      <Route path="/challenge/10" element={<Puma />} /> */}
 
       {/* readable routes */}
       <Route path="/challenge/rat" element={<Rat />} />
