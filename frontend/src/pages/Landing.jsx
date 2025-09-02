@@ -13,7 +13,7 @@ export default function Landing() {
   const start = () => {
     if (!username.trim()) return;
     localStorage.setItem("ctf_username", username.trim());
-    navigate("/challenge/rat");
+    navigate("/challenge/Odysseus");
   };
 
   return (

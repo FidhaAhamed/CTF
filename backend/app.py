@@ -7,6 +7,9 @@ from datetime import datetime, timezone
 
 from pathlib import Path
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / ".env")
+print("Loaded .env from:", Path(__file__).resolve().parents[1] / ".env")
+print("SUPABASE_URL =", os.environ.get("SUPABASE_URL"))
+
 
 
 app = Flask(__name__)
@@ -27,6 +30,8 @@ def parse_map(env_value: str):
 
 CHALLENGE_HASHES = parse_map(os.environ.get("CHALLENGE_HASHES", ""))
 CHALLENGE_CODES  = parse_map(os.environ.get("CHALLENGE_CODES", ""))
+
+
 
 @app.after_request
 def add_cors_headers(resp: Response):
