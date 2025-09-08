@@ -16,10 +16,10 @@ const HiddenPassword = () => {
       const password = "odysseyacrostime";
 
       // Encode the password using Base64
-      const encoded = btoa(password); // "b2R5c3NleWFjcm9zc3RpbWU="
+      const encoded = btoa(password); // real clue
 
-      // Some random decoy strings
-      const decoys = [
+      // Some random decoy strings (plain text)
+      const decoysPlain = [
         "x9v2l8k1m",
         "randomtext123",
         "fooBarBaz!",
@@ -27,11 +27,14 @@ const HiddenPassword = () => {
         "qwerty987",
       ];
 
+      // Encode all decoys in Base64
+      const decoys = decoysPlain.map((str) => btoa(str));
+
       // Mix the password with decoys
       const mixed = [...decoys, encoded]
         .sort(() => Math.random() - 0.5) // shuffle
         .join(" | "); // separate with |
-      
+
       // Create hidden span
       const span = document.createElement("span");
       span.id = "titleBase64";
