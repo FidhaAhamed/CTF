@@ -8,7 +8,7 @@ Players solve fun password/flag challenges and progress through a sequence of le
 
 ## 🚀 Features
 
-* 🔑 Multi-level CTF (Rat → Cat → Fox → … Puma).
+* 🔑 Multi-level CTF (Theme : Odyssey of Time).
 * 🖥️ Frontend checks each submitted flag with **SHA256 hash** before sending to backend.
 * 📦 Backend verifies submissions and stores them in **Supabase**.
 * 📊 Database logs contain:
