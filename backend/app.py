@@ -1,50 +1,63 @@
 import os
-from flask import Flask, request, jsonify
-from flask import Response
+from flask import Flask, request, jsonify, Response
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from datetime import datetime, timezone
-
 from pathlib import Path
-load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / ".env")
-print("Loaded .env from:", Path(__file__).resolve().parents[1] / ".env")
-print("SUPABASE_URL =", os.environ.get("SUPABASE_URL"))
 
+# Load environment variables (parent folder .env)
+dotenv_path = Path(__file__).resolve().parents[1] / ".env"
+if dotenv_path.exists():
+    load_dotenv(dotenv_path=dotenv_path)
+    print(f"✅ Loaded .env from: {dotenv_path}")
+else:
+    print("⚠️ No .env file found, relying on Render environment variables.")
 
-
+# Flask app
 app = Flask(__name__)
 
+# Supabase client
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
+
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise RuntimeError("❌ SUPABASE_URL or SUPABASE_SERVICE_KEY not set!")
+
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+
+# Helper: parse CHALLENGE_HASHES and CHALLENGE_CODES from env
 def parse_map(env_value: str):
     m = {}
     if not env_value:
         return m
     parts = [p.strip() for p in env_value.split(",") if p.strip()]
     for p in parts:
-        k, v = p.split(":", 1)
-        m[k.strip()] = v.strip()
+        if ":" in p:
+            k, v = p.split(":", 1)
+            m[k.strip()] = v.strip()
     return m
 
+
 CHALLENGE_HASHES = parse_map(os.environ.get("CHALLENGE_HASHES", ""))
-CHALLENGE_CODES  = parse_map(os.environ.get("CHALLENGE_CODES", ""))
+CHALLENGE_CODES = parse_map(os.environ.get("CHALLENGE_CODES", ""))
 
 
-
+# Middleware: Add CORS headers
 @app.after_request
 def add_cors_headers(resp: Response):
-    # Simple CORS for local dev / Vercel frontend
     resp.headers["Access-Control-Allow-Origin"] = os.environ.get("CORS_ORIGIN", "*")
     resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     return resp
 
+
+# Route: Submit challenge solution
 @app.route("/api/submit", methods=["POST", "OPTIONS"])
 def submit():
     if request.method == "OPTIONS":
         return ("", 204)
+
     data = request.get_json(force=True, silent=True) or {}
     username = (data.get("username") or "").strip()
     challenge_name = (data.get("challenge_name") or "").strip()
@@ -62,32 +75,38 @@ def submit():
 
     code = CHALLENGE_CODES.get(challenge_name, "?")
 
-    # Upsert-like behavior: Insert only if not exists for (username, challenge_name)
-    # Unique constraint is enforced in DB; on conflict do nothing.
     now = datetime.now(timezone.utc).isoformat()
     try:
         supabase.table("submissions").insert({
             "username": username,
             "challenge_name": challenge_name,
             "code": code,
-            # timestamp is default now() in DB; sending for clarity too
             "timestamp": now
         }, count="exact").execute()
-    except Exception:
-        # Likely a duplicate due to unique constraint; ignore
-        pass
+    except Exception as e:
+        print(f"⚠️ Insert error (probably duplicate): {e}")
 
     return jsonify({"success": True, "code": code})
 
+
+# Route: Get status of submissions for a user
 @app.route("/api/status/<username>", methods=["GET"])
 def status(username):
     username = username.strip()
     if not username:
         return jsonify({"submissions": []})
-    # Return in ascending timestamp order
-    res = supabase.table("submissions").select("*").eq("username", username).order("timestamp", desc=False).execute()
+
+    res = supabase.table("submissions").select("*").eq(
+        "username", username
+    ).order("timestamp", desc=False).execute()
+
     rows = res.data or []
     return jsonify({"submissions": rows})
 
+
+# Local run
 if __name__ == "__main__":
-    app.run(port=int(os.environ.get("PORT", "5000")), debug=bool(int(os.environ.get("FLASK_DEBUG", "1"))))
+    port = int(os.environ.get("PORT", "5000"))
+    debug = bool(int(os.environ.get("FLASK_DEBUG", "1")))
+    print(f"🚀 Running Flask on http://localhost:{port} (debug={debug})")
+    app.run(host="0.0.0.0", port=port, debug=debug)
