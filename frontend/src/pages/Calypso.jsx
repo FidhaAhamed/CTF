@@ -13,7 +13,7 @@ const HiddenPassword = () => {
   useEffect(() => {
     (function () {
       // original password
-      const password = "odysseyacrostime";
+      const password = "odysseyacrosstime";
 
       // Encode the password using Base64
       const encoded = btoa(password); // real clue
