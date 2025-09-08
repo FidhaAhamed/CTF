@@ -1,5 +1,5 @@
 import ChallengePage from "../components/ChallengePage";
 const NAME="zeus", NUMBER=6, TITLE="Zeus";
-const HASH="9a50821756e14977f2dbb2ac2e5ed789ce4d6c4f8a29c538c136b408c3196280";
+const HASH="5c7906a3b838872ecf7c82d2b0910e56034f95081333d8e2a07a7330f4e60dc1";
 const CODE="k";
 export default function Zeus(){return <ChallengePage title={TITLE} name={NAME} number={NUMBER} hash={HASH} code={CODE} nextRoute="/challenge/Hermes" />;}
