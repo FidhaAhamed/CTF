@@ -1,5 +1,49 @@
-import ChallengePage from "../components/ChallengePage";
-const NAME="zeus", NUMBER=6, TITLE="Zeus";
-const HASH="5c7906a3b838872ecf7c82d2b0910e56034f95081333d8e2a07a7330f4e60dc1";
-const CODE="k";
-export default function Zeus(){return <ChallengePage title={TITLE} name={NAME} number={NUMBER} hash={HASH} code={CODE} nextRoute="/challenge/Hermes" />;}
+// Zeus.jsx
+import ChallengeContainer from "../components/ChallengeContainer";
+
+const NAME = "zeus";
+const NUMBER = 6;
+const TITLE = "Zeus";
+const NEXT_ROUTE = "/challenge/hermes";
+
+const obfuscatedCode = `
+(function(){
+  var _0x4f12 = ['vi', 'tru', 'vian', 'mat', 'rix'];
+  var pass = _0x4f12[0] + _0x4f12[1] + _0x4f12[2] + _0x4f12[3] + _0x4f12[4];
+  console.log("Decoded password is:", pass);
+  return pass;
+})();
+`;
+
+export default function Zeus() {
+  const specialSubmit = (input, setErr, setShowCode, setCodeText, navigate) => {
+    const normalized = input.toLowerCase().trim();
+
+    if (normalized.includes("mar athanasius")) {
+      // Show the obfuscated code as a hint
+      setShowCode(true);
+      setCodeText(obfuscatedCode);
+      setErr("");
+    } else if (normalized === "vitruvianmatrix") {
+      // Correct final password, navigate to next challenge
+      setShowCode(false);
+      setCodeText("");
+      setErr("");
+      navigate(NEXT_ROUTE);
+    } else {
+      setShowCode(false);
+      setCodeText("");
+      setErr("Incorrect. Hint: Check the console for coordinates or decode the code.");
+    }
+  };
+
+  return (
+    <ChallengeContainer
+      title={TITLE}
+      name={NAME}
+      number={NUMBER}
+      nextRoute={NEXT_ROUTE}
+      specialSubmit={specialSubmit}
+    />
+  );
+}
