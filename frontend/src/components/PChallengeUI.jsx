@@ -6,7 +6,7 @@ export default function PChallengeUI({ value, setValue, err, onSubmit, number, t
         type="password"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="flag{...}"
+        placeholder="flag"
         className="w-full rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-3"
         required
       />

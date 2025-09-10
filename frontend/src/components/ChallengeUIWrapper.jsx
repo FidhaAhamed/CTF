@@ -85,7 +85,7 @@ export default function ChallengePage({
             type="password"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="flag{...}"
+            placeholder="flag"
             className="w-full rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-3"
             required
           />
@@ -101,12 +101,7 @@ export default function ChallengePage({
         {/* Hidden clues / audio */}
         {hiddenElements}
 
-        <div className="mt-6 text-sm text-neutral-400 flex justify-between">
-          <a href="/">← Landing</a>
-          <span>
-            Alias: <code>/challenge/{number}</code> or <code>/challenge/{name}</code>
-          </span>
-        </div>
+        
       </div>
     </div>
   );

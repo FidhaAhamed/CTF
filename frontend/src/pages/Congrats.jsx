@@ -6,7 +6,7 @@ export default function Congrats() {
           🎉 Congratulations! 
         </h1>
         <p className="text-lg text-gray-300">
-          You reached the end of the Odyssey of Time CTF!
+          You reached the end of the Odyssey across Time CTF!
         </p>
       </div>
     </div>

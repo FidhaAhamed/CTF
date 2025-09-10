@@ -19,7 +19,7 @@ export default function ChallengePageHiddenError({ title, name, number, hash, co
     const clientHash = SHA256(value).toString();
 
     if (clientHash !== hash) {
-      setErr("hiddenflag{spintoera}");
+      setErr("flag: spintoera");
       setShowHiddenErr(true);
       return;
     }
@@ -64,10 +64,6 @@ export default function ChallengePageHiddenError({ title, name, number, hash, co
           hiddenError={showHiddenErr}
         />
 
-        <div className="mt-6 text-sm text-neutral-400 flex justify-between">
-          <Link to="/">← Landing</Link>
-          <span>Alias routes: /challenge/{number} and /challenge/{name}</span>
-        </div>
       </div>
     </div>
   );
