@@ -67,8 +67,7 @@ export default function Hermes() {
           pointerEvents: "none" // can’t click/select
         }}
       >
-        ↑ ↑ ↓ ↓ ← → ← → B A
-      </h2>
+        ↑ ↑ ↓ ↓ ← → ← → b a     </h2>
 
       <ChallengePage
         title={TITLE}
