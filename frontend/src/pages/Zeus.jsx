@@ -12,15 +12,16 @@ function _0x41ab(_0x4b6ca8,_0x2172f7){var _0x330621=_0x3306();return _0x41ab=fun
 
 export default function Zeus() {
   const specialSubmit = (input, setErr, setShowCode, setCodeText, navigate) => {
-    const normalized = input.toLowerCase().trim();
+    const normalized = input.toLowerCase().replace(/\s+/g, " ").trim();
 
-    if (normalized.includes("mar athanasius")) {
-      // Show the obfuscated code as a hint
-      setShowCode(true);
-      setCodeText(obfuscatedCode);
-      setErr("");
-    } else if (normalized === "vitruvianmatrix") {
-      // Correct final password, navigate to next challenge
+const trigger = "mar athanasius college of engineering kothamangalam";
+if (normalized.includes(trigger)) {
+  setShowCode(true);
+  setCodeText(obfuscatedCode);
+  setErr("");
+}
+
+    else if (normalized === "vitruvianmatrix") {
       setShowCode(false);
       setCodeText("");
       setErr("");
