@@ -69,7 +69,7 @@ export default function ChallengePage({
             value={value}
             onChange={(e)=>setValue(e.target.value)}
             className="w-full rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-red-500"
-            placeholder="flag{...} or your password"
+            placeholder="flag"
             required
           />
           {err && <p className="text-red-400 text-sm">{err}</p>}
@@ -81,11 +81,7 @@ export default function ChallengePage({
           </button>
         </form>
 
-        <div className="mt-6 text-sm text-neutral-400 flex justify-between">
-          <Link to="/">← Landing</Link>
-          <span>Alias routes: /challenge/{number} and /challenge/{name}</span>
         </div>
-      </div>
     </div>
   );
 }

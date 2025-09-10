@@ -44,7 +44,7 @@ export default function ChallengeContainer({
           type="text"
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Type your answer here"
+          placeholder="flag"
           className="w-full rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-3 text-white"
           required
           autoComplete="off"

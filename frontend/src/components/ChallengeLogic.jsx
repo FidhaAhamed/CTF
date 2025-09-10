@@ -17,7 +17,7 @@ export default function ChallengeLogic({ name, number, hash, code, nextRoute, ch
     if (clientHash !== hash) {
       setErr("Incorrect — try again.");
       return;
-    }
+    }1
 
     const username = localStorage.getItem("ctf_username") || "";
     if (!username) {

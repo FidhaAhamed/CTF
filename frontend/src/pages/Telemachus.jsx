@@ -1,16 +1,31 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Correct for Vite + React
+import { useNavigate } from "react-router-dom";
 
 const NAME = "telemachus";
 const NUMBER = 3;
 const TITLE = "Telemachus";
 const HASH = "826457e1f6810cda018196cd7631b6a5e7a03644a91fbc599c7613ab9008f603";
 const CODE = "@";
-const PASSWORD = "catchmeifyoucan";
+
+// Password pieces hidden in DOM (with decoys)
+const SCRAMBLED = ["m","c","a","t","n","h","e","f","y","o","u","c","a","c","i"];
 
 export default function Telemachus() {
   const [input, setInput] = useState("");
-  const navigate = useNavigate(); // ✅ Hook from react-router-dom
+  const [PASSWORD, setPASSWORD] = useState("");
+  const navigate = useNavigate();
+
+  // On mount → reconstruct password from DOM
+  useEffect(() => {
+    const hiddenDiv = document.getElementById("hidden-password");
+    if (hiddenDiv) {
+      // Collect only the actual letters (filter noise manually)
+      const letters = SCRAMBLED.filter((ch) =>
+        "catchmeifyoucan".includes(ch) // keep only valid letters
+      );
+      setPASSWORD(letters.join(""));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -18,12 +33,12 @@ export default function Telemachus() {
   };
 
   useEffect(() => {
-    if (input === PASSWORD) {
+    if (PASSWORD && input === PASSWORD) {
       setTimeout(() => {
-        navigate("/challenge/Athena"); // ✅ Navigate to next route
+        navigate("/challenge/Athena");
       }, 500);
     }
-  }, [input, navigate]);
+  }, [input, navigate, PASSWORD]);
 
   const getLetterDisplay = (index) => {
     if (index >= input.length) {
@@ -56,7 +71,7 @@ export default function Telemachus() {
           value={input}
           onChange={handleChange}
           className="w-full rounded-lg bg-neutral-800 border border-neutral-700 px-4 py-2 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-red-500"
-          placeholder="Type here..."
+          placeholder="flag"
         />
         <div className="mt-6 text-2xl font-mono tracking-widest text-yellow-400">
           {Array.from({ length: PASSWORD.length }, (_, index) => (
@@ -65,6 +80,13 @@ export default function Telemachus() {
             </span>
           ))}
         </div>
+      </div>
+
+      {/* Hidden scrambled letters */}
+      <div id="hidden-password" style={{ display: "none" }}>
+        {SCRAMBLED.map((ch, i) => (
+          <span key={i}>{ch}</span>
+        ))}
       </div>
     </div>
   );
