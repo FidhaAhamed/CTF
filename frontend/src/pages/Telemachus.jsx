@@ -1,31 +1,18 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // ✅ Correct for Vite + React
 
 const NAME = "telemachus";
 const NUMBER = 3;
 const TITLE = "Telemachus";
 const HASH = "826457e1f6810cda018196cd7631b6a5e7a03644a91fbc599c7613ab9008f603";
 const CODE = "@";
+const PASSWORD = "catchmeifyoucan";
 
-// Password pieces hidden in DOM (with decoys)
-const SCRAMBLED = ["m","c","a","t","n","h","e","f","y","o","u","c","a","c","i"];
+const SCRAMBLED = ["m","a","c","n","f","y","c","t","h","o","u","a","c","e","i"];
 
 export default function Telemachus() {
   const [input, setInput] = useState("");
-  const [PASSWORD, setPASSWORD] = useState("");
-  const navigate = useNavigate();
-
-  // On mount → reconstruct password from DOM
-  useEffect(() => {
-    const hiddenDiv = document.getElementById("hidden-password");
-    if (hiddenDiv) {
-      // Collect only the actual letters (filter noise manually)
-      const letters = SCRAMBLED.filter((ch) =>
-        "catchmeifyoucan".includes(ch) // keep only valid letters
-      );
-      setPASSWORD(letters.join(""));
-    }
-  }, []);
+  const navigate = useNavigate(); // ✅ Hook from react-router-dom
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -33,12 +20,12 @@ export default function Telemachus() {
   };
 
   useEffect(() => {
-    if (PASSWORD && input === PASSWORD) {
+    if (input === PASSWORD) {
       setTimeout(() => {
-        navigate("/challenge/Athena");
+        navigate("/challenge/Athena"); // ✅ Navigate to next route
       }, 500);
     }
-  }, [input, navigate, PASSWORD]);
+  }, [input, navigate]);
 
   const getLetterDisplay = (index) => {
     if (index >= input.length) {
@@ -82,8 +69,7 @@ export default function Telemachus() {
         </div>
       </div>
 
-      {/* Hidden scrambled letters */}
-      <div id="hidden-password" style={{ display: "none" }}>
+      <div style={{ display: "none" }}>
         {SCRAMBLED.map((ch, i) => (
           <span key={i}>{ch}</span>
         ))}
